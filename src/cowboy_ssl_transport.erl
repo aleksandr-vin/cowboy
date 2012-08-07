@@ -65,6 +65,12 @@ connect(Host, Port, Opts) when is_list(Host), is_integer(Port) ->
 %%  <dt>ciphers</dt><dd>Optional. The cipher suites that should be supported.
 %%  The function ssl:cipher_suites/0 can be used to find all available
 %%  ciphers.</dd>
+%%  <dt>verify</dt><dd>Optional. Peer verification type that the server will
+%%  use.</dd>
+%%  <dt>verify_fun</dt><dd>Optional. Verification function as described in
+%%  ssl server manual.</dd>
+%%  <dt>fail_if_no_peer_cert</dt><dd>Optional. Boolean flag to control the
+%%  behaviour of the ssl server on the peer certificate absense.</dd>
 %% </dl>
 %%
 %% @see ssl:listen/2
@@ -87,6 +93,9 @@ listen(Opts) ->
 		({cacertfile, _} = CACertFile, Acc) -> [CACertFile | Acc];
 		({password, _} = Password, Acc) -> [Password | Acc];
 		({ciphers, _} = Ciphers, Acc) -> [Ciphers | Acc];
+		({verify, _} = Verify, Acc) -> [Verify | Acc];
+                ({verify_fun, _} = VerifyFun, Acc) -> [VerifyFun | Acc];
+                ({fail_if_no_peer_cert, _} = FailIfNoPeerCert, Acc) -> [FailIfNoPeerCert | Acc];
 		(_, Acc) -> Acc
 	end, ListenOpts0, Opts),
 	ssl:listen(Port, ListenOpts).
